@@ -10,6 +10,8 @@ public class BcdTransformer {
     private static final String DATE_FORMAT = "dd-MM-yyyy";
     private static final String DATE_FORMATTER = "dd-MM-yyyy_HH:mm:ss";
 
+    private BcdTransformer() {}
+
     public static String getBcdMM(String issueDate) throws ParseException {
         Calendar c = Calendar.getInstance();
         c.setTime(getDate(issueDate));

@@ -22,14 +22,13 @@ public class PdfController {
     @Autowired
     private PdfService pdfService;
 
-    @RequestMapping(value = "/bill",
-            method = RequestMethod.GET, produces = "application/pdf")
+    @GetMapping(value = "/bill", produces = "application/pdf")
     public ResponseEntity<InputStreamResource> download(@RequestParam("accountId") String accountId,
                                                         @RequestParam("issueDate") String issueDate,
                                                         @RequestParam("userType") String userType,
                                                         @RequestParam("billType") String billType,
                                                         @RequestParam("extension") String extension)
-            throws IOException, CustomerNotFoundException, ParseException, NumberFormatException {
+            throws IOException, CustomerNotFoundException, ParseException {
 
         if (accountId == null || accountId.isEmpty()) {
             throw new CustomerNotFoundException();
@@ -50,7 +49,7 @@ public class PdfController {
         headers.add("Access-Control-Allow-Origin", "*");
         headers.add("Access-Control-Allow-Methods", "GET, POST, PUT");
         headers.add("Access-Control-Allow-Headers", "Content-Type");
-        headers.add("Content-Disposition", String.format("attachment; filename=" + filename));
+        headers.add("Content-Disposition", String.format("attachment; filename=%s",filename));
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         headers.add("Pragma", "no-cache");
         headers.add("Expires", "0");
