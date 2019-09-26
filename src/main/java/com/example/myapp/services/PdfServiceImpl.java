@@ -20,38 +20,19 @@ import java.text.ParseException;
 public class PdfServiceImpl implements PdfService {
 
     @Autowired
-    ApplicationContext appContext;
+    private ApplicationContext appContext;
 
-    @Value("${designs.diagrams.url}")
+    @Value("${pdf.file.path}")
     private String pdfFilePath;
 
     @Override
-    public ResponseEntity<InputStreamResource> getPdf(String accountId, String issueDate, String userType, String billType, String extension) throws ParseException, IOException {
-        Resource firstResource =
-                appContext.getResource(pdfFilePath + NnTransformer.getNN(accountId)
+    public Resource getResource(String accountId, String issueDate, String userType, String billType, String extension) throws ParseException {
+        return appContext.getResource(pdfFilePath + NnTransformer.getNN(accountId)
                         + "/" + BcdTransformer.getBcdMM(issueDate)
                         + "/" + BcdTransformer.getBcdFull(issueDate)
                         + "/" + accountId + "_" + BcdTransformer.getBcdFull(issueDate)
                         + "_" + billType + userType + "." + extension);
 
-        HttpHeaders headers = getHeaders(accountId + "_" + BcdTransformer.getBcdFull(issueDate) + "_" + billType + userType + "." + extension);
-
-        headers.setContentLength(firstResource.contentLength());
-        ResponseEntity<InputStreamResource> response = new ResponseEntity<InputStreamResource>(
-                new InputStreamResource(firstResource.getInputStream()), headers, HttpStatus.OK);
-        return response;
     }
 
-    private HttpHeaders getHeaders(String filename) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        headers.add("Access-Control-Allow-Origin", "*");
-        headers.add("Access-Control-Allow-Methods", "GET, POST, PUT");
-        headers.add("Access-Control-Allow-Headers", "Content-Type");
-        headers.add("Content-Disposition", String.format("attachment; filename=" + filename));
-        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        headers.add("Pragma", "no-cache");
-        headers.add("Expires", "0");
-        return headers;
-    }
 }
