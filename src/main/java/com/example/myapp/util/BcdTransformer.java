@@ -9,8 +9,6 @@ public class BcdTransformer {
 
     private static final String DATE_FORMAT = "dd-MM-yyyy";
     private static final String DATE_FORMATTER = "dd-MM-yyyy_HH:mm:ss";
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-    private static final SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_FORMATTER);
 
     public static String getBcdMM(String issueDate) throws ParseException {
         Calendar c = Calendar.getInstance();
@@ -24,15 +22,16 @@ public class BcdTransformer {
     }
 
     public static String getBcdFull(String issueDate) throws ParseException {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_FORMATTER);
         Calendar c = Calendar.getInstance();
         c.setTime(getDate(issueDate));
         return dateFormatter.format(c.getTime());
     }
 
     private static Date getDate(String issueDate) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         Date date;
         date = dateFormat.parse(issueDate);
         return date;
     }
-
 }

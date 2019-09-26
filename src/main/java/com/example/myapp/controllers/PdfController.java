@@ -40,7 +40,7 @@ public class PdfController {
                 + billType + userType + "." + extension);
 
         headers.setContentLength(resource.contentLength());
-       return new ResponseEntity<>(
+        return new ResponseEntity<>(
                 new InputStreamResource(resource.getInputStream()), headers, HttpStatus.OK);
     }
 
